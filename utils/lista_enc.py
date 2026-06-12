@@ -2,7 +2,7 @@
 Lista dinamica para guardar os livros
 """
 
-from livros import Livro
+from livro import Livro
 
 class Node:
     def __init__(self, dado:Livro):
