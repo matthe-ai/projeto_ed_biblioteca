@@ -10,3 +10,10 @@ Funcionalidades:
     desfazer ultimos emprestimos
     gerar relatorio geral do acervo
 """
+
+from utils import livro, livros, livros_busca, org_livros, desfazer, emprestimo
+
+class Biblioteca:
+    def __init__(self):
+        pass
+
