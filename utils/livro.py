@@ -1,3 +1,4 @@
+
 class Livro:
     def __init__(self, ISBN:str, titulo:str, autor:str, ano_pub:int, qtd_ex:int):
         self.isbn = ISBN
