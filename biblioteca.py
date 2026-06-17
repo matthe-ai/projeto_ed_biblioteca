@@ -11,7 +11,7 @@ Funcionalidades:
     gerar relatorio geral do acervo
 """
 
-from utils import livro, livros, livros_busca, org_livros, desfazer, emprestimo
+from utils import livro, livros_busca, livros_lista, org_livros, desfazer, emprestimo
 
 class Biblioteca:
     def __init__(self):
