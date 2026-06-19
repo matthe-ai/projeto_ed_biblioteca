@@ -2,8 +2,10 @@
 Arvore AVL para buscar livros e fazer amostragem em ordem alfabetica
 """
 
+from livro import Livro
+
 class Node:
-    def __init__(self, livro):
+    def __init__(self, livro:Livro):
         self.livro = livro
         self.esq = None
         self.dir = None
@@ -30,8 +32,7 @@ class Livros_busca:
             return 0
 
         return (
-            self.altura(no.esq)
-            - self.altura(no.dir)
+            self.altura(no.esq) - self.altura(no.dir)
         )
 
     def rotacao_direita(self, y):
@@ -143,10 +144,10 @@ class Livros_busca:
         self._em_ordem(self.raiz)
 
     def _em_ordem(self, no):
-
+    # se for necessario usar em outro lugar, acho valido criar um array e para cada livro, faz o append
         if no is not None:
             self._em_ordem(no.esq)
-            print(no.livro)
+            print(no.livro.titulo)
             self._em_ordem(no.dir)
 
     def remover(self, titulo):
@@ -248,3 +249,20 @@ class Livros_busca:
             atual = atual.esq
 
         return atual
+
+if __name__ == "__main__":
+    arv = Livros_busca()
+    livro1 = Livro("295221423-9", "Faces of Death 5", "jorge", 2011, 9)
+    livro2 = Livro("114893376-X", "Datetown", "mininu", 2005, 3)
+    livro3 = Livro("295221423-9", "The crazy", "Thiago", 2010, 8)
+    arv.inserir(livro1)
+    arv.listar_alfabetico()
+    print()
+    arv.inserir(livro2)
+    arv.listar_alfabetico()
+    print()
+    arv.inserir(livro3)
+    arv.listar_alfabetico()
+    print()
+    arv.remover(livro1.titulo)
+    arv.listar_alfabetico()
