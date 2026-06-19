@@ -79,3 +79,10 @@ class Emprestimos:
             while atual.prox != no:
                 atual = atual.prox
             atual.prox = atual.prox.prox
+
+if __name__ == "__main__":
+    ls = Emprestimos()
+    livro1 = Livro("123-321-05-1232-9", "mininu", "jorge", 2021, 4)
+    for i in range(5):
+        ls.emprestar(livro1,f"pessoa{i}")
+    print(ls.devolver(livro1))

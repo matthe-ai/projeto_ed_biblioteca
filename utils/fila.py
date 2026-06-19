@@ -3,7 +3,7 @@ class Fila:
         self.dados = []
 
     def enfileirar(self, dado):
-        self.dados = self.dados.append(dado)
+        self.dados.append(dado)
 
     def desenfileirar(self):
         if len(self.dados) > 0:
@@ -14,7 +14,7 @@ class Fila:
             return tmp
         else:
             return
-    
+
     def vazia(self)->bool:
         if self.dados == []:
             return True
