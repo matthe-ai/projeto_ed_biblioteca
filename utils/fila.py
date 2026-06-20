@@ -20,3 +20,9 @@ class Fila:
             return True
         else:
             return False
+
+    def remover(self, quem:str):
+        self.dados.remove(quem)
+
+    def tamanho(self):
+        return len(self.dados)

@@ -2,17 +2,15 @@
 Arvore AVL para buscar livros e fazer amostragem em ordem alfabetica
 """
 
-from livro import Livro
-
 class Node:
-    def __init__(self, livro:Livro):
+    def __init__(self, livro: "Livro"):
         self.livro = livro
         self.esq = None
         self.dir = None
         self.altura = 1
 
 
-class Livros_busca:
+class Livros_arvore:
     def __init__(self):
         self.raiz = None
 
@@ -30,10 +28,7 @@ class Livros_busca:
     def fator_balanceamento(self, no):
         if no is None:
             return 0
-
-        return (
-            self.altura(no.esq) - self.altura(no.dir)
-        )
+        return ( self.altura(no.esq) - self.altura(no.dir) )
 
     def rotacao_direita(self, y):
         x = y.esq
@@ -63,7 +58,6 @@ class Livros_busca:
         self.raiz = self._inserir(self.raiz, livro)
 
     def _inserir(self, no, livro):
-
         if no is None:
             return Node(livro)
 
@@ -141,16 +135,18 @@ class Livros_busca:
         )
 
     def listar_alfabetico(self):
-        self._em_ordem(self.raiz)
+        dados = []
+        self._em_ordem(self.raiz, dados)
+        return dados
 
-    def _em_ordem(self, no):
+    def _em_ordem(self, no, dados):
     # se for necessario usar em outro lugar, acho valido criar um array e para cada livro, faz o append
         if no is not None:
-            self._em_ordem(no.esq)
-            print(no.livro.titulo)
-            self._em_ordem(no.dir)
+            self._em_ordem(no.esq, dados)
+            dados.append(no.livro)
+            self._em_ordem(no.dir, dados)
 
-    def remover(self, titulo):
+    def remover(self, titulo:str):
         self.raiz = self._remover(
             self.raiz,
             titulo.lower()
@@ -251,7 +247,7 @@ class Livros_busca:
         return atual
 
 if __name__ == "__main__":
-    arv = Livros_busca()
+    arv = Livros_arvore()
     livro1 = Livro("295221423-9", "Faces of Death 5", "jorge", 2011, 9)
     livro2 = Livro("114893376-X", "Datetown", "mininu", 2005, 3)
     livro3 = Livro("295221423-9", "The crazy", "Thiago", 2010, 8)
