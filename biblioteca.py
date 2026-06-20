@@ -67,22 +67,22 @@ class Biblioteca:
             print(livro.titulo)
         return None
 
-    def emprestar_livro(self, livro: "Livro", quem: str):
+    def emprestar_livro(self, isbn:str, quem: str):
         """
         Recebe o objeto do livro a ser emprestado e o nome de quem tá pegando emprestado
         """
-        if livro and quem:
-            self.emprestimos.emprestar(livro, quem)
+        if isbn and quem:
+            self.emprestimos.emprestar(self.buscar_livro(isbn), quem)
             self.historico.push((livro,quem))
         else:
             return "Informação faltando"
 
-    def devolver_livro(self, livro: "Livro", quem: str = None):
+    def devolver_livro(self, isbn:str, quem: str = None):
         """
         Recebe o objeto do livro emprestado e devolve
         """
         if livro:
-            self.emprestimos.devolver(livro, quem)
+            self.emprestimos.devolver(self.buscar_livro(isbn), quem)
         else:
             return "Informação faltando"
     
@@ -102,7 +102,7 @@ class Biblioteca:
             else:
                 dados.append([livro, livro.qtd_ex, 0])
         relatorio_info = relatorio.gerar_relatorio(dados)
-        print(relatorio_info)
+        return relatorio_info
 
 
 if __name__ == "__main__":
