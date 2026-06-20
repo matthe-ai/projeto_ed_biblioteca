@@ -23,3 +23,6 @@ class Fila:
 
     def remover(self, quem:str):
         self.dados.remove(quem)
+
+    def tamanho(self):
+        return len(self.dados)

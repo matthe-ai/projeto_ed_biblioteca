@@ -7,11 +7,11 @@ Funcionalidades:
     realizar emprestimo - Ok
     realizar devolução - Ok
     inserir em lista de espera quando não houver exemplares disponiveis - Ok
-    desfazer ultimos emprestimos
-    gerar relatorio geral do acervo
+    desfazer ultimos emprestimos - Ok
+    gerar relatorio geral do acervo - Ok
 """
 
-from utils import livro as lvr, livros_busca, livros_lista, org_livros, desfazer, emprestimos
+from utils import livro as lvr, livros_busca, livros_lista, org_livros, desfazer, emprestimos, relatorio
 
 # livro: classe livro
 # livros_busca: tabela hash
@@ -62,7 +62,9 @@ class Biblioteca:
         """
         Lista em ordem alfabetica
         """
-        self.arvore.listar_alfabetico()
+        livros = self.arvore.listar_alfabetico()
+        for livro in livros:
+            print(livro.titulo)
         return None
 
     def emprestar_livro(self, livro: "Livro", quem: str):
@@ -87,11 +89,27 @@ class Biblioteca:
     def desfazer_emprestimo(self):
         livro, quem = self.historico.topo_pilha()
         self.devolver_livro(livro, quem)
+        self.historico.pop()
         return None
+
+    def mostrar_relatorio(self):
+        dados = []
+        livros = self.arvore.listar_alfabetico()
+        for livro in livros:
+            emprestimos_data = self.emprestimos.buscar(livro.isbn)
+            if emprestimos_data != None:
+                dados.append([livro, emprestimos_data.qtd, emprestimos_data.fila.tamanho()])
+            else:
+                dados.append([livro, livro.qtd_ex, 0])
+        relatorio_info = relatorio.gerar_relatorio(dados)
+        print(relatorio_info)
+
 
 if __name__ == "__main__":
     lib = Biblioteca()
     lib.cadastrar_livro("1234-02-453-8", "testou", "testador", 2026, 1)
     lib.cadastrar_livro("8723-90-709-1", "garotando", "menino", 2004, 3)
+    lib.cadastrar_livro("6277-87-806-9", "arnaldo", "sonhador", 2021, 7)
     lib.remover_livro("0")
-    lib.remover_livro("1234-02-453-8")
+    lib.listar_livros()
+    lib.mostrar_relatorio()

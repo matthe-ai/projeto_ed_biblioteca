@@ -135,14 +135,16 @@ class Livros_arvore:
         )
 
     def listar_alfabetico(self):
-        self._em_ordem(self.raiz)
+        dados = []
+        self._em_ordem(self.raiz, dados)
+        return dados
 
-    def _em_ordem(self, no):
+    def _em_ordem(self, no, dados):
     # se for necessario usar em outro lugar, acho valido criar um array e para cada livro, faz o append
         if no is not None:
-            self._em_ordem(no.esq)
-            print(no.livro.titulo)
-            self._em_ordem(no.dir)
+            self._em_ordem(no.esq, dados)
+            dados.append(no.livro)
+            self._em_ordem(no.dir, dados)
 
     def remover(self, titulo:str):
         self.raiz = self._remover(
