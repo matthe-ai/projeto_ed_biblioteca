@@ -2,10 +2,8 @@
 Lista dinâmica para guardar os livros
 """
 
-from livro import Livro
-
 class Node:
-    def __init__(self, dado: Livro):
+    def __init__(self, dado: "Livro"):
         self.prox = None
         self.dado = dado
 
@@ -13,7 +11,7 @@ class Livros_enc:
     def __init__(self):
         self.head = None
 
-    def cadastrar_livro(self, livro: Livro):
+    def cadastrar_livro(self, livro: "Livro"):
         """
         Insere um livro sempre no fim da lista
         """

@@ -2,10 +2,8 @@
 Arvore AVL para buscar livros e fazer amostragem em ordem alfabetica
 """
 
-from livro import Livro
-
 class Node:
-    def __init__(self, livro:Livro):
+    def __init__(self, livro: "Livro"):
         self.livro = livro
         self.esq = None
         self.dir = None
@@ -146,7 +144,7 @@ class Livros_arvore:
             print(no.livro.titulo)
             self._em_ordem(no.dir)
 
-    def remover(self, titulo):
+    def remover(self, titulo:str):
         self.raiz = self._remover(
             self.raiz,
             titulo.lower()

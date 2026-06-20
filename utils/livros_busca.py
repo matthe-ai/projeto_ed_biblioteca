@@ -2,8 +2,6 @@
 Tabela hash para busca de livros por ISBN
 """
 
-from livro import Livro
-
 class Tabela:
     def __init__(self, tamanho = 10):
         self.tamanho = tamanho
