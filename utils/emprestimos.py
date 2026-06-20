@@ -53,11 +53,13 @@ class Emprestimos:
                 busca.fila.enfileirar(quem) # adiciona no fim
                 return "Emprestimo não realizado, usuario foi para fila de espera"
 
-    def devolver(self, livro: "Livro")->str:
+    def devolver(self, livro: "Livro", quem:str=None)->str:
         busca = self.buscar(livro.isbn)
         if busca == None:
             return "Não tem como devolver o que não foi emprestado"
         if not busca.fila.vazia():
+            if quem != None:
+                return busca.fila.remover(quem)
             return f"Fila andou, {busca.fila.desenfileirar()} foi o próximo" # fila anda mas quantidade não aumenta
         else:
             busca.qtd += 1 # fila esta vazia, quantidade aumenta

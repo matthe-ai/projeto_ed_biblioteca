@@ -2,11 +2,11 @@
 Funcionalidades:
     cadastrar livro - Ok
     remover livro - Ok
-    buscar livro
-    listar livros em ordem alfabetica
-    realizar emprestimo
-    realizar devolução
-    inserir em lista de espera quando não houver exemplares disponiveis
+    buscar livro - Ok
+    listar livros em ordem alfabetica - Ok
+    realizar emprestimo - Ok
+    realizar devolução - Ok
+    inserir em lista de espera quando não houver exemplares disponiveis - Ok
     desfazer ultimos emprestimos
     gerar relatorio geral do acervo
 """
@@ -51,6 +51,43 @@ class Biblioteca:
             print(f"{titulo} foi removido")
         else:
             return "Informação faltando"
+
+    def buscar_livro(self, isbn:str):
+        if isbn:
+            return self.tabela_hash.buscar(isbn)
+        else:
+            return "Informação faltando"
+    
+    def listar_livros(self):
+        """
+        Lista em ordem alfabetica
+        """
+        self.arvore.listar_alfabetico()
+        return None
+
+    def emprestar_livro(self, livro: "Livro", quem: str):
+        """
+        Recebe o objeto do livro a ser emprestado e o nome de quem tá pegando emprestado
+        """
+        if livro and quem:
+            self.emprestimos.emprestar(livro, quem)
+            self.historico.push((livro,quem))
+        else:
+            return "Informação faltando"
+
+    def devolver_livro(self, livro: "Livro", quem: str = None):
+        """
+        Recebe o objeto do livro emprestado e devolve
+        """
+        if livro:
+            self.emprestimos.devolver(livro, quem)
+        else:
+            return "Informação faltando"
+    
+    def desfazer_emprestimo(self):
+        livro, quem = self.historico.topo_pilha()
+        self.devolver_livro(livro, quem)
+        return None
 
 if __name__ == "__main__":
     lib = Biblioteca()

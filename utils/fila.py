@@ -20,3 +20,6 @@ class Fila:
             return True
         else:
             return False
+
+    def remover(self, quem:str):
+        self.dados.remove(quem)
