@@ -1,17 +1,17 @@
 # Objeto livro
 
 Livro = {
-    isbn:str
-    titulo:str
-    autor:str
-    ano_pub:int
+    isbn:str,
+    titulo:str,
+    autor:str,
+    ano_pub:int,
     qtd_ex:int
 }
 
 # Objeto emprestimo
 
 Emprestimo = {
-    isbn:str
+    isbn:str,
     quem:str
 }
 
@@ -20,11 +20,11 @@ Emprestimo = {
 > "status" varia apenas entre "ok" e "not ok"
 
 * "/" - GET: Serve apenas para teste de funcionamento
-> Retorno esperado: {"status": "ok", "message":"Funcionando"}
+> Retorno: {"status": "ok", "message":"Funcionando"}
 
 * "/api/cadastrar" - POST: Serve para cadastar novos livros
 > body: json(Livro)
-> Retorno esperado: {"status": "?", "message":"?"}
+> Retorno: {"status": "?", "message":"?"}
 
 * "/api/buscar/{isbn}" - GET: Serve para buscar um livro pelo ISBN
 > Retorno: {"status": "ok", "message":"?", "data": Livro}
@@ -47,6 +47,7 @@ Emprestimo = {
 > Retorno: {"status":"ok", "message":"Ação desfeita"}
 
 * "/api/mock" - GET: Serve para mockar os dados em um CSV com 50 "livros"
-> Retorno: {"status":"ok", "message":"Relatorio gerado", "data":[header, [dados_livro], rodape]}
+> Retorno: {"status":"ok", "message":"Dados mockados"}
 
-
+* "/api/relatorio" - GET: Serve para gerar um relatorio geral da biblioteca
+> Retorno: {"status":"ok", "message":"Relatorio gerado", "data":[header, [dados_livro:str], rodape]}
