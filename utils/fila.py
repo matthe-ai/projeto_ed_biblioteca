@@ -23,6 +23,7 @@ class Fila:
 
     def remover(self, quem:str):
         self.dados.remove(quem)
+        return f"{quem} foi removido da fila de espera"
 
     def tamanho(self):
         return len(self.dados)
