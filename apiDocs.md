@@ -38,9 +38,11 @@ Emprestimo = {
 > Retorno: {"status": "ok", "message":"?", "data":[Livro]}
 
 * "/api/emprestimo" - POST: Serve para fazer emprestimos
+> body: json(Emprestimo)
 > Retorno: {"status": "?", "message":"?"}
 
 * "/api/devolver" - POST: Serve para devolver um livro
+> body: json(Emprestimo)
 > Retorno: {"status": "?", "message":"?"}
 
 * "/api/desfazer" - GET: Serve para desfazer o ultimo emprestimo
