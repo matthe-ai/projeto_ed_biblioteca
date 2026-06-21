@@ -48,7 +48,7 @@ class Biblioteca:
             self.lista_enc.remover_livro(isbn)
             self.arvore.remover(titulo)
             self.emprestimos.limpar_emprestimo(self.emprestimos.buscar(isbn))
-            print(f"{titulo} foi removido")
+            return f"{titulo} foi removido"
         else:
             return "Informação faltando"
 
@@ -58,22 +58,30 @@ class Biblioteca:
         else:
             return "Informação faltando"
     
-    def listar_livros(self):
+    def listar_livros(self, printar:bool=True):
         """
         Lista em ordem alfabetica
         """
         livros = self.arvore.listar_alfabetico()
-        for livro in livros:
-            print(livro.titulo)
-        return None
+        if printar:
+            for livro in livros:
+                print(livro.titulo)
+            return None
+        else:
+            return livros
 
     def emprestar_livro(self, isbn:str, quem: str):
         """
         Recebe o objeto do livro a ser emprestado e o nome de quem tá pegando emprestado
         """
         if isbn and quem:
-            self.emprestimos.emprestar(self.buscar_livro(isbn), quem)
+            livro = self.buscar_livro(isbn)
+            if self.emprestimos.emprestar(livro, quem).lower() == "emprestimo realizado":
+                message = f"Livro {livro.titulo} emprestado ao {quem}"
+            else:
+                message = f"{quem} foi para a fila de espera do livro {livro.titulo}"
             self.historico.push((livro,quem))
+            return message
         else:
             return "Informação faltando"
 
@@ -81,14 +89,14 @@ class Biblioteca:
         """
         Recebe o objeto do livro emprestado e devolve
         """
-        if livro:
-            self.emprestimos.devolver(self.buscar_livro(isbn), quem)
+        if isbn:
+            return self.emprestimos.devolver(self.buscar_livro(isbn), quem)
         else:
             return "Informação faltando"
     
     def desfazer_emprestimo(self):
         livro, quem = self.historico.topo_pilha()
-        self.devolver_livro(livro, quem)
+        self.devolver_livro(livro.isbn, quem)
         self.historico.pop()
         return None
 

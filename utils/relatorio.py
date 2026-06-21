@@ -11,6 +11,7 @@ def gerar_relatorio(dados:[[Livro,int,int]]): #primeiro int é a quantidade disp
     RELATORIO GERAL DO ACERVO
     =========================
         """
+        livros = []
         for i in range(len(dados)):
             livro, qtd_disp, taman_fila = dados[i]
             livro_info = f"""\n
@@ -22,15 +23,15 @@ def gerar_relatorio(dados:[[Livro,int,int]]): #primeiro int é a quantidade disp
             if taman_fila > 0:
                 livro_info += f"({taman_fila} usuários na fila de espera)"
             
-            base += livro_info
+            livros.append(livro_info)
 
-        base += f"""\n
+        rodape = f"""\n
     =========================
     TOTAL DE LIVROS: {len(dados)}
     =========================
         """
 
-        return base
+        return [base,livros,rodape]
 
 
 if __name__ == "__main__":
