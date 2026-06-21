@@ -86,7 +86,7 @@ def devolver(dados: Emprestimo):
     response:str = lib.devolver_livro(dados.isbn, dados.quem)
     return {"status":"ok", "message":response}
 
-@app.post("/api/desfazer")
+@app.get("/api/desfazer")
 def desfazer():
     lib.desfazer_emprestimo()
     return {"status":"ok", "message":"Ação desfeita"}
@@ -96,7 +96,7 @@ def relatorio():
     response:str = lib.mostrar_relatorio()
     return {"status":"ok", "message":"Relatorio gerado", "data":response}
 
-@app.post("/api/mock")
+@app.get("/api/mock")
 def mock_dados():
     import csv
     caminho = "mockdata/livros.csv"
