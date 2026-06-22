@@ -14,8 +14,15 @@ Metodos:
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from biblioteca import Biblioteca
+
+# Definição dos CORS
+
+origins = [
+        "http://localhost:5173"
+]
 
 # Instancia da biblioteca
 
@@ -33,6 +40,22 @@ class Livro_dados(BaseModel):
 class Emprestimo(BaseModel):
     isbn:str
     quem:str
+
+# CONFIG
+
+class Config:
+    def __init__(self):
+        self.MOCKADO = False
+
+config = Config()
+
+# Reposta relatorio
+
+class Livro_rel:
+    # mesmos atributos do livro normal
+    qtd_disp:int # quantidade disponiveis
+    tam_fila:int # tamanho da fila
+
 
 # Instancia do app
 
@@ -106,11 +129,13 @@ def desfazer():
 
 @app.get("/api/relatorio", status_code=status.HTTP_200_OK)
 def relatorio():
-    response:str = lib.mostrar_relatorio()
+    response:[Livro] = lib.mostrar_relatorio()
     return {"status":"ok", "message":"Relatorio gerado", "data":response}
 
 @app.get("/api/mock", status_code=status.HTTP_200_OK)
 def mock_dados():
+    if config.MOCKADO == True:
+        return {"status":"ok", "message":"Dados já foram mockados"}
     import csv
     caminho = "mockdata/livros.csv"
     with open(caminho, "r", encoding='utf-8') as file:
@@ -118,4 +143,5 @@ def mock_dados():
         next(csv_read) # pula o header
         for linha in csv_read:
             lib.cadastrar_livro(linha[0],linha[1],linha[2],int(linha[3]),int(linha[4]))
+    config.MOCKADO = True
     return {"status":"ok", "message":"Dados mockados"}
