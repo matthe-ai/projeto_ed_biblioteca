@@ -17,7 +17,7 @@ class Emprestimos:
     def __init__(self):
         self.head = None
 
-    def buscar(self,ISBN:str)-> Livro | None:
+    def buscar(self, ISBN:str)-> Node | None:
         if self.head == None:
             return None
         atual = self.head
