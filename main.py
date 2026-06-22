@@ -42,7 +42,11 @@ class Emprestimo(BaseModel):
 
 # CONFIG
 
-MOCKADO = False
+class Config:
+    def __init__(self):
+        self.MOCKADO = False
+
+config = Config()
 
 # Instancia do app
 
@@ -117,7 +121,7 @@ def relatorio():
 
 @app.get("/api/mock")
 def mock_dados():
-    if MOCKADO:
+    if config.MOCKADO == True:
         return {"status":"ok", "message":"Dados já foram mockados"}
     import csv
     caminho = "mockdata/livros.csv"
@@ -126,5 +130,5 @@ def mock_dados():
         next(csv_read) # pula o header
         for linha in csv_read:
             lib.cadastrar_livro(linha[0],linha[1],linha[2],int(linha[3]),int(linha[4]))
-    MOCKADO = True
+    config.MOCKADO = True
     return {"status":"ok", "message":"Dados mockados"}
