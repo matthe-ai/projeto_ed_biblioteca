@@ -13,8 +13,15 @@ Metodos:
 
 from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from biblioteca import Biblioteca
+
+# Definição dos CORS
+
+origins = [
+        "http://localhost:5173"
+]
 
 # Instancia da biblioteca
 
@@ -33,9 +40,21 @@ class Emprestimo(BaseModel):
     isbn:str
     quem:str
 
+# CONFIG
+
+MOCKADO = False
+
 # Instancia do app
 
 app = FastAPI()
+
+app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"]
+    )
 
 # Definição de rotas
 
@@ -98,6 +117,8 @@ def relatorio():
 
 @app.get("/api/mock")
 def mock_dados():
+    if MOCKADO:
+        return {"status":"ok", "message":"Dados já foram mockados"}
     import csv
     caminho = "mockdata/livros.csv"
     with open(caminho, "r", encoding='utf-8') as file:
@@ -105,4 +126,5 @@ def mock_dados():
         next(csv_read) # pula o header
         for linha in csv_read:
             lib.cadastrar_livro(linha[0],linha[1],linha[2],int(linha[3]),int(linha[4]))
+    MOCKADO = True
     return {"status":"ok", "message":"Dados mockados"}
