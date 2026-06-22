@@ -48,6 +48,14 @@ class Config:
 
 config = Config()
 
+# Reposta relatorio
+
+class Livro_rel:
+    # mesmos atributos do livro normal
+    qtd_disp:int # quantidade disponiveis
+    tam_fila:int # tamanho da fila
+
+
 # Instancia do app
 
 app = FastAPI()
@@ -116,7 +124,7 @@ def desfazer():
 
 @app.get("/api/relatorio")
 def relatorio():
-    response:str = lib.mostrar_relatorio()
+    response:[Livro] = lib.mostrar_relatorio()
     return {"status":"ok", "message":"Relatorio gerado", "data":response}
 
 @app.get("/api/mock")
