@@ -18,12 +18,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from biblioteca import Biblioteca
 
-# Definição dos CORS
-
-origins = [
-        "http://localhost:5173"
-]
-
 # Instancia da biblioteca
 
 lib = Biblioteca()
@@ -60,6 +54,8 @@ class Livro_rel:
 # Instancia do app
 
 app = FastAPI()
+
+# Definição de CORS
 
 origins = [
     "http://localhost:5173",
