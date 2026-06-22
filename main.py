@@ -11,7 +11,8 @@ Metodos:
     mostrar_relatorio()->str
 """
 
-from fastapi import FastAPI
+from fastapi import FastAPI, status
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -60,13 +61,17 @@ class Livro_rel:
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:5173",
+]
+
 app.add_middleware(
-        CORSMiddleware,
-        allow_origins=origins,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"]
-    )
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Definição de rotas
 
@@ -74,7 +79,7 @@ app.add_middleware(
 def root():
     return {"status": "ok", "message":"Funcionando"}
 
-@app.post("/api/cadastrar")
+@app.post("/api/cadastrar", status_code=status.HTTP_201_CREATED)
 def cadastrar(dados: Livro_dados):
     response:str = lib.cadastrar_livro(dados.isbn, dados.titulo, dados.autor, dados.ano_pub, dados.qtd_ex)
     if response.lower() == "cadastrado":
@@ -82,22 +87,22 @@ def cadastrar(dados: Livro_dados):
     else:
         return {"status": "not ok", "message":"Livro não cadastrado, deve estar faltando informação"}
 
-@app.get("/api/buscar/{isbn}")
+@app.get("/api/buscar/{isbn}", status_code=status.HTTP_200_OK)
 def buscar(isbn:str):
     response:Livro_dados|None|str = lib.buscar_livro(isbn)
     if type(response) != str:
         if response == None or type(response) == str:
-            return {"status": "not ok", "message":"Livro não encontrado ou não existe"}
+            return {"status": "not ok", "message":"Livro não encontrado"}
         else:
             response = jsonable_encoder(response.__dict__)
-            return {"status": "ok", "message":"Livro encontrado", "data":response}
+            return {"status": "ok", "message":"Livro encontrado", "book":response}
 
-@app.delete("/api/delete/{isbn}")
+@app.delete("/api/delete/{isbn}", status_code=status.HTTP_200_OK)
 def deletar(isbn:str):
     response:str = lib.remover_livro(isbn)
     return {"status": "ok", "message": response}
 
-@app.get("/api/listar")
+@app.get("/api/listar", status_code=status.HTTP_200_OK)
 def listar():
     response:[Livro_dados]|None = lib.listar_livros(False)
     if response == None:
@@ -105,29 +110,29 @@ def listar():
     dados = []
     for livro in response:
         dados.append(jsonable_encoder(livro.__dict__))
-    return {"status":"ok", "message":"Livros encontrados","data":dados}
+    return {"status":"ok", "message":"Livros encontrados","books":dados}
 
-@app.post("/api/emprestimo")
+@app.post("/api/emprestimo", status_code=status.HTTP_201_CREATED)
 def emprestar(dados: Emprestimo):
     response:str = lib.emprestar_livro(dados.isbn, dados.quem)
     return {"status":"ok", "message":response}
 
-@app.post("/api/devolver")
+@app.post("/api/devolver", status_code=status.HTTP_201_CREATED)
 def devolver(dados: Emprestimo):
     response:str = lib.devolver_livro(dados.isbn, dados.quem)
     return {"status":"ok", "message":response}
 
-@app.get("/api/desfazer")
+@app.get("/api/desfazer", status_code=status.HTTP_200_OK )
 def desfazer():
     lib.desfazer_emprestimo()
     return {"status":"ok", "message":"Ação desfeita"}
 
-@app.get("/api/relatorio")
+@app.get("/api/relatorio", status_code=status.HTTP_200_OK)
 def relatorio():
     response:[Livro] = lib.mostrar_relatorio()
     return {"status":"ok", "message":"Relatorio gerado", "data":response}
 
-@app.get("/api/mock")
+@app.get("/api/mock", status_code=status.HTTP_200_OK)
 def mock_dados():
     if config.MOCKADO == True:
         return {"status":"ok", "message":"Dados já foram mockados"}
