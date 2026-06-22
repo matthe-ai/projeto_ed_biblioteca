@@ -126,7 +126,7 @@ def desfazer():
 @app.get("/api/relatorio", status_code=status.HTTP_200_OK)
 def relatorio():
     response:[Livro] = lib.mostrar_relatorio()
-    return {"status":"ok", "message":"Relatorio gerado", "data":response}
+    return {"status":"ok", "message":"Relatorio gerado", "report":response}
 
 @app.get("/api/mock", status_code=status.HTTP_200_OK)
 def mock_dados():
