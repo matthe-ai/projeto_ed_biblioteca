@@ -18,5 +18,10 @@ Para iniciar o frontent, rode dentro da pasta frontend:
 
 `
 npm i
+`
+> Para instalar as dependências
+
+`
 npm run dev
 `
+> Para rodar o servidor de front que pode ser acessado em: **http://localhost:5173/**
